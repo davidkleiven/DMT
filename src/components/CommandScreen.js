@@ -65,7 +65,7 @@ class CommandScreen extends Component{
     }
 
     executeCommand = () => {
-
+        this.db.update(this.state.cmd);
     }
 };
 
