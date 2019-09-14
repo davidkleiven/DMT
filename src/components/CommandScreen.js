@@ -2,20 +2,34 @@ import React, { Component } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { connect } from 'react-redux';
+import DatabaseManager from '../DatabaseManager';
+
 import {
     COMMAND_TYPE_TEXT_OUTPUT,
-    COMMAND_TYPE_PLOT_OUTPUT
+    COMMAND_TYPE_PLOT_OUTPUT,
+    DB_NAME
 } from '../constants';
 
 class CommandScreen extends Component{
     state = {commandType: COMMAND_TYPE_TEXT_OUTPUT, cmd: ''}
+    db = null
+
+    componentDidMount = () => {
+        this.db = new DatabaseManager(DB_NAME);
+    }
+
+    componentWillUnmount = () => {
+        this.db.close();
+        this.db = null;
+    }
+
     render(){
         var data = [['Text output', 'Plot output']]
         return (
             <View>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={text => this.props.onChangeText(text)}
+                    onChangeText={text => this.onChangeText(text)}
                     placeholder={'Enter a command'}
                     />
                 <Button
@@ -38,6 +52,10 @@ class CommandScreen extends Component{
         );
     }
 
+    onChangeText = (text) => {
+        this.db.mostPopular(text, this.state.commandType, this.props.updateFavorites);
+    }
+
     setTextOutput = () => {
         this.props.commandType = COMMAND_TYPE_TEXT_OUTPUT
     }
@@ -52,9 +70,9 @@ class CommandScreen extends Component{
 };
 
 const mapStateToProps = ({ cmd }) => {
-    const { onChangeText, commandType } = cmd;
+    const { updateFavorites, commandType } = cmd;
 
-    return { onChangeText, commandType };
+    return { updateFavorites, commandType };
 }
 
 export default connect(

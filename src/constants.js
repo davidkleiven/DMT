@@ -1,4 +1,5 @@
 export const NAVIGATE_TO_COMMAND_SCREEN = 'navigate_to_command_screen';
+export const DB_NAME = 'commandStatistics';
 
 // Command screen actions
 export const TEXT_ENTERED_IN_CMD_FIELD = 'text_entered_in_cmd_field';

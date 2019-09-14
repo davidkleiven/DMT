@@ -1,5 +1,6 @@
 import{
-    NAVIGATE_TO_COMMAND_SCREEN
+    NAVIGATE_TO_COMMAND_SCREEN,
+    TEXT_ENTERED_IN_CMD_FIELD
 } from '../constants';
 
 export const navigateToCommandScreen = (navigate) => {
@@ -12,6 +13,11 @@ export const navigateToCommandScreen = (navigate) => {
     }
 }
 
-export const onChangeText = (text) => {
-
+export const updateFavorites = (res) => {
+    return (dispatch) => {
+        dispatch({
+            type: TEXT_ENTERED_IN_CMD_FIELD,
+            payload: {text, db}
+        })
+    }
 };
