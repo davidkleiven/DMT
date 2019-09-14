@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from './src/routers/Router'; 
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {

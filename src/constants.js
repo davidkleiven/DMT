@@ -1,0 +1,1 @@
+export const NAVIGATE_TO_COMMAND_SCREEN = 'navigate_to_command_screen';
