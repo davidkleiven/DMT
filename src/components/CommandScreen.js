@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { connect } from 'react-redux';
-import DatabaseManager from '../DatabaseManager';
 
 import {
     COMMAND_TYPE_TEXT_OUTPUT,
@@ -12,16 +11,6 @@ import {
 
 class CommandScreen extends Component{
     state = {commandType: COMMAND_TYPE_TEXT_OUTPUT, cmd: ''}
-    db = null
-
-    componentDidMount = () => {
-        this.db = new DatabaseManager(DB_NAME);
-    }
-
-    componentWillUnmount = () => {
-        this.db.close();
-        this.db = null;
-    }
 
     render(){
         var data = [['Text output', 'Plot output']]
@@ -53,7 +42,7 @@ class CommandScreen extends Component{
     }
 
     onChangeText = (text) => {
-        this.db.mostPopular(text, this.state.commandType, this.props.updateFavorites);
+        
     }
 
     setTextOutput = () => {
