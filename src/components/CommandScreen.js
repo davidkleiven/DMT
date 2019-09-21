@@ -3,6 +3,10 @@ import { View, TextInput, Button } from 'react-native';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { connect } from 'react-redux';
 import StorageManager from '../storageManager';
+import {
+    updateFavorites,
+    setCommandType
+} from '../actions/commandScreenActions';
 
 import {
     COMMAND_TYPE_TEXT_OUTPUT,
@@ -11,7 +15,7 @@ import {
 } from '../constants';
 
 class CommandScreen extends Component{
-    state = {commandType: COMMAND_TYPE_TEXT_OUTPUT, cmd: ''}
+    state = {commandType: COMMAND_TYPE_TEXT_OUTPUT, command: ''}
     storage = new StorageManager();
 
     render(){
@@ -31,6 +35,18 @@ class CommandScreen extends Component{
                     title='Execute'
                     onPress = {() => this.executeCommand()}
                 />
+                <Button 
+                    title={this.getFavorite(0)}
+                    onPress={() => this.runCommandFromHistory(0)}
+                />
+                <Button 
+                    title={this.getFavorite(1)}
+                    onPress={() => this.runCommandFromHistory(1)}
+                />
+                <Button 
+                    title={this.getFavorite(2)}
+                    onPress={() => this.runCommandFromHistory(2)}
+                />
                 <View style={{height: 40}}>
                     <DropdownMenu
                         style={{flex: 1}}
@@ -47,29 +63,56 @@ class CommandScreen extends Component{
         );
     }
 
+    getFavorite = (rank) => {
+        if (rank >= this.props.favorites.length){
+            return ''
+        }
+        return this.props.favorites[rank];
+    }
+
+    runCommandFromHistory = (rank) => {
+        let cmd = this.getFavorite(rank);
+        this._executeCommand(cmd);
+    }
+
     onChangeText = (text) => {
-        this.state.cmd = text;
+        if (text === ''){
+            return;
+        }
+
+        this.storage.mostCalled(text, (matches) => {
+            this.props.updateFavorites(text, matches);
+        })
     }
 
     setTextOutput = () => {
-        this.props.commandType = COMMAND_TYPE_TEXT_OUTPUT
+        this.props.setCommandType(COMMAND_TYPE_TEXT_OUTPUT);
     }
 
     setPlotOutput = () => {
-        this.props.commandType = COMMAND_TYPE_PLOT_OUTPUT
+        this.props.setCommandType(COMMAND_TYPE_PLOT_OUTPUT);
     }
 
+    _executeCommand = (cmd) => {
+        if (cmd === ''){
+            return;
+        }
+        this.storage.updateCommand(cmd);
+    }
     executeCommand = () => {
-        this.storage.updateCommand(this.state.cmd);
+        this._executeCommand(this.props.command);
     }
 };
 
 const mapStateToProps = ({ cmd }) => {
-    const { updateFavorites, commandType } = cmd;
-
-    return { updateFavorites, commandType };
+    const { commandType, favorites, command } = cmd;
+    return { commandType, favorites, command };
 }
 
 export default connect(
-    mapStateToProps, {}
+    mapStateToProps,
+    {
+        updateFavorites,
+        setCommandType
+    }
 )(CommandScreen);

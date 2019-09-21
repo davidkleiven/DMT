@@ -5,3 +5,4 @@ export const DB_NAME = 'commandStatistics';
 export const TEXT_ENTERED_IN_CMD_FIELD = 'text_entered_in_cmd_field';
 export const COMMAND_TYPE_TEXT_OUTPUT = 'text_output_cmd';
 export const COMMAND_TYPE_PLOT_OUTPUT = 'plot_output_command';
+export const COMMAND_TYPE_CHANGED = 'command_type_changed';
