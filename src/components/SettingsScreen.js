@@ -11,6 +11,10 @@ class SettingsScreen extends Component{
                     title='Clear Data'
                     onPress = {() => this.clearData()}
                 />
+                <Button
+                    title='New connection'
+                    onPress = {() => this.props.navigation.navigate('NewConnection')}
+                />
             </View>
         )
     }
