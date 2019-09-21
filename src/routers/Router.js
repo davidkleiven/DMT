@@ -11,9 +11,11 @@ import {
 } from 'react-navigation-stack';
 
 import CommandScreen from '../components/CommandScreen';
+import SettingsScreen from '../components/SettingsScreen';
 
 const MainNavigator = createStackNavigator({
   Command: {screen: CommandScreen},
+  Settings: {screen: SettingsScreen}
 });
 
 const App = createAppContainer(MainNavigator);

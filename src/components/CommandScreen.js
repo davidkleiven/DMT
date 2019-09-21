@@ -18,6 +18,10 @@ class CommandScreen extends Component{
         var data = [['Text output', 'Plot output']]
         return (
             <View>
+                <Button
+                    title='Settings'
+                    onPress={() => this.props.navigation.navigate('Settings')}
+                />
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                     onChangeText={text => this.onChangeText(text)}

@@ -30,6 +30,12 @@ class StorageManager{
             this._storeData(cmd, num);
         });
     }
+
+    clearAll = () => {
+        AsyncStorage.getAllKeys().then((keys) => {
+            AsyncStorage.multiRemove(keys);
+        });
+    }
 }
 
 export default StorageManager;

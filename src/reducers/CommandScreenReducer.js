@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
         case TEXT_ENTERED_IN_CMD_FIELD:
-            return {...state, cmd: action.p};
+            return {...state, cmd: action.cmd};
         default:
             return state;
     }
