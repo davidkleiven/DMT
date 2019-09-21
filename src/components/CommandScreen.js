@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { connect } from 'react-redux';
+import StorageManager from '../storageManager';
 
 import {
     COMMAND_TYPE_TEXT_OUTPUT,
@@ -11,6 +12,7 @@ import {
 
 class CommandScreen extends Component{
     state = {commandType: COMMAND_TYPE_TEXT_OUTPUT, cmd: ''}
+    storage = new StorageManager();
 
     render(){
         var data = [['Text output', 'Plot output']]
@@ -42,7 +44,7 @@ class CommandScreen extends Component{
     }
 
     onChangeText = (text) => {
-        
+        this.state.cmd = text;
     }
 
     setTextOutput = () => {
@@ -54,7 +56,7 @@ class CommandScreen extends Component{
     }
 
     executeCommand = () => {
-        this.db.update(this.state.cmd);
+        this.storage.updateCommand(this.state.cmd);
     }
 };
 
