@@ -10,6 +10,7 @@ class NewConnectionScreen extends Component{
         this.username = ''
         this.passwd = ''
         this.alias = ''
+        this.port = ''
     }
     render(){
         return (
@@ -37,6 +38,11 @@ class NewConnectionScreen extends Component{
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                     placeholder={'Alias'}
                     onChangeText={(text) => this.alias = text}
+                    />
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    placeholder={'Port'}
+                    onChangeText={(text) => this.port = text}
                     />
                 <Button
                     title='Connect'
@@ -68,7 +74,7 @@ class NewConnectionScreen extends Component{
         }
         var sm = new StorageManager();
         
-        let info = {host: this.host, username: this.username, alias: this.alias};
+        let info = {host: this.host, username: this.username, alias: this.alias, port: this.port};
         sm._storeData(this.alias, JSON.stringify(info));
         sm.updateAliases(this.alias);
     }
