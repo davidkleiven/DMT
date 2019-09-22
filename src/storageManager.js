@@ -128,6 +128,20 @@ class StorageManager{
             cb(known_alias);
         })
     }
+
+    deleteKnownConnection = (alias, cb) => {
+        this._retrieveData('alias').then((values) => {
+            if (values !== null){
+                known_alias = JSON.parse(values);
+                known_alias.pop(alias);
+                this._storeData('alias', known_alias).then(() => {
+                    AsyncStorage.removeItem(alias, (err) => {
+                        cb();
+                    });
+                })
+            }
+        })
+    }
 }
 
 export default StorageManager;

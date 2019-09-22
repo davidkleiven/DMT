@@ -3,6 +3,7 @@ import { View, TextInput, Button, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import StorageManager from '../storageManager';
 import {setKnownConnections} from '../actions/KnownConnectionsActions';
+import {deletableItemStyle} from './styles';
 
 class KnownConnectionsScreen extends Component{
     componentWillMount = () => {
@@ -14,10 +15,20 @@ class KnownConnectionsScreen extends Component{
 
     createKnownConnectionButton = (id) => {
         return (
-            <Button
-                title={this.props.known_connections[id]}
-                onPress={() => this.connectToKnown(id)}
-            />
+            <View style={deletableItemStyle.container}>
+                <View style={deletableItemStyle.mainButton}>
+                    <Button
+                        title={this.props.known_connections[id]}
+                        onPress={() => this.connectToKnown(id)}
+                    />
+                </View>
+                <View style={deletableItemStyle.deleteButton}>
+                    <Button
+                        title='Del'
+                        onPress={() => this.deleteKnownConnection(id)}
+                    />
+                </View>
+            </View>
         )
     }
 
@@ -44,6 +55,15 @@ class KnownConnectionsScreen extends Component{
         )
     }
 
+    deleteKnownConnection = (id) => {
+        let sm = new StorageManager();
+        sm.deleteKnownConnection(this.props.known_connections[id], 
+            () => {
+                sm.getKnownConnections((known) => {
+                    this.props.setKnownConnections(known);
+                });
+            })
+    }
     connectToKnown = (id) => {
 
     }
