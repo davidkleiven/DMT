@@ -133,13 +133,31 @@ class StorageManager{
         this._retrieveData('alias').then((values) => {
             if (values !== null){
                 known_alias = JSON.parse(values);
-                known_alias.pop(alias);
+                let index = known_alias.indexOf(alias);
+                known_alias.splice(index, 1);
                 this._storeData('alias', known_alias).then(() => {
                     AsyncStorage.removeItem(alias, (err) => {
                         cb();
                     });
                 })
             }
+        })
+    }
+
+    deleteCommand = (cmd, cb) => {
+        this._retrieveData('known_commands').then((cmds) => {
+
+            let known_cmds = [];
+            if (cmds !== null){
+                known_cmds = JSON.parse(cmds);
+                let index = known_cmds.indexOf(cmd);
+                known_cmds.splice(index, 1);
+            }
+            this._storeData('known_commands', known_cmds).then(() => {
+                AsyncStorage.removeItem(cmd, (err) => {
+                    cb();
+                })
+            })
         })
     }
 }

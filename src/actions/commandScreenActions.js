@@ -33,11 +33,11 @@ export const setCommandType = (cmdType) => {
     }
 }
 
-export const setCommand = (cmd) => {
+export const setCommand = (cmd, matches) => {
     return (dispatch) => {
         dispatch({
             type: COMMAND_SELECTED_FROM_HISTORY,
-            payload: cmd
+            payload: {command: cmd, favorites: matches}
         })
     }
 }
