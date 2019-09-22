@@ -1,7 +1,8 @@
 import {
     TEXT_ENTERED_IN_CMD_FIELD,
     COMMAND_TYPE_TEXT_OUTPUT,
-    COMMAND_TYPE_CHANGED
+    COMMAND_TYPE_CHANGED,
+    COMMAND_SELECTED_FROM_HISTORY
     
 } from '../constants';
 
@@ -17,6 +18,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, command: action.payload.command, favorites: action.payload.favorites};
         case COMMAND_TYPE_CHANGED:
                 return {...state, commandType: action.payload.commandType}
+        case COMMAND_SELECTED_FROM_HISTORY:
+            return {...state, command: action.payload}
         default:
             return state;
     }

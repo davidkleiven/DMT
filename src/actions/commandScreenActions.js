@@ -1,7 +1,8 @@
 import{
     NAVIGATE_TO_COMMAND_SCREEN,
     TEXT_ENTERED_IN_CMD_FIELD,
-    COMMAND_TYPE_CHANGED
+    COMMAND_TYPE_CHANGED,
+    COMMAND_SELECTED_FROM_HISTORY
 } from '../constants';
 
 export const navigateToCommandScreen = (navigate) => {
@@ -28,6 +29,15 @@ export const setCommandType = (cmdType) => {
         dispatch({
             type: COMMAND_TYPE_CHANGED,
             payload: {commandType: cmdType}
+        })
+    }
+}
+
+export const setCommand = (cmd) => {
+    return (dispatch) => {
+        dispatch({
+            type: COMMAND_SELECTED_FROM_HISTORY,
+            payload: cmd
         })
     }
 }
