@@ -13,11 +13,13 @@ import {
 import CommandScreen from '../components/CommandScreen';
 import SettingsScreen from '../components/SettingsScreen';
 import NewConnectionScreen from '../components/newConnectionScreen';
+import KnownConnectionsScreen from '../components/KnownConnectionsScreen';
 
 const MainNavigator = createStackNavigator({
   Command: {screen: CommandScreen},
   Settings: {screen: SettingsScreen},
-  NewConnection: {screen: NewConnectionScreen}
+  NewConnection: {screen: NewConnectionScreen},
+  KnownConnections: {screen: KnownConnectionsScreen}
 });
 
 const App = createAppContainer(MainNavigator);
