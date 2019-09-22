@@ -42,18 +42,42 @@ class StorageManager{
                 num += 1;
             }
             this._storeData(cmd, num);
+            this.updateKnownCommands(cmd);
         });
+    }
+
+    updateKnownCommands = (cmd) => {
+        this._retrieveData('known_commands').then((cmds) => {
+            let known_commands = [];
+            if (cmds !== null){
+                known_commands = JSON.parse(cmds);
+            }
+
+            if (known_commands.indexOf(cmd) === -1){
+                known_commands.push(cmd);
+                this._storeData('known_commands', known_commands);
+            }
+        })
     }
 
     clearAll = () => {
-        AsyncStorage.getAllKeys().then((keys) => {
-            AsyncStorage.multiRemove(keys);
-        });
+        this._retrieveData('known_commands').then((cmds) => {
+            let know_commands = []
+            if (cmds !== null){
+                known_commands = JSON.parse(cmds);
+            }
+            AsyncStorage.multiRemove(known_commands);
+        })
     }
 
     mostCalled = (text, cb) => {
-        AsyncStorage.getAllKeys((_, keys) => {
+        this._retrieveData('known_commands').then((known_keys) => {
             // Find all keys starting with text
+            let keys = []
+            if (known_keys !== null){
+                keys = JSON.parse(known_keys);
+            }
+
             var matches = [];
             for (var i=0;i<keys.length;i++){
                 if (keys[i].startsWith(text)){
@@ -76,6 +100,46 @@ class StorageManager{
                 const sorted = sortedZipped.map(([_, item]) => item);
                 cb(sorted);
             })
+        })
+    }
+
+    updateAliases = (alias) => {
+        this._retrieveData('alias').then((values) => {
+            let known_alias = []
+            if (values !== null){
+                known_alias = JSON.parse(values);
+            }
+            console.log(known_alias);
+            if (known_alias.indexOf(alias) === -1){
+                // This is a new alias
+                known_alias.push(alias);
+                this._storeData('alias', known_alias);
+            }
+        })
+    }
+
+    getKnownConnections = (cb) => {
+        this._retrieveData('alias').then((values) => {
+            let known_alias = [];
+            if (values !== null){
+                known_alias = JSON.parse(values);
+            }
+            console.log(known_alias);
+            cb(known_alias);
+        })
+    }
+
+    deleteKnownConnection = (alias, cb) => {
+        this._retrieveData('alias').then((values) => {
+            if (values !== null){
+                known_alias = JSON.parse(values);
+                known_alias.pop(alias);
+                this._storeData('alias', known_alias).then(() => {
+                    AsyncStorage.removeItem(alias, (err) => {
+                        cb();
+                    });
+                })
+            }
         })
     }
 }

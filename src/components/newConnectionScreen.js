@@ -70,6 +70,7 @@ class NewConnectionScreen extends Component{
         
         let info = {host: this.host, username: this.username, alias: this.alias};
         sm._storeData(this.alias, JSON.stringify(info));
+        sm.updateAliases(this.alias);
     }
 }
 

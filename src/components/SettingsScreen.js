@@ -15,6 +15,10 @@ class SettingsScreen extends Component{
                     title='New connection'
                     onPress = {() => this.props.navigation.navigate('NewConnection')}
                 />
+                <Button
+                    title='Known connections'
+                    onPress = {() => this.props.navigation.navigate('KnownConnections')}
+                />
             </View>
         )
     }
