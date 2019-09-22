@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, TextInput, Button } from 'react-native';
-import DropdownMenu from 'react-native-dropdown-menu';
+import { View, TextInput, Button, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import StorageManager from '../storageManager';
 import {
     updateFavorites,
-    setCommandType
+    setCommandType,
+    setCommand
 } from '../actions/commandScreenActions';
 
 import {
@@ -13,54 +13,71 @@ import {
     COMMAND_TYPE_PLOT_OUTPUT,
     DB_NAME
 } from '../constants';
+import {deletableItemStyle} from './styles';
 
 class CommandScreen extends Component{
-    state = {commandType: COMMAND_TYPE_TEXT_OUTPUT, command: ''}
+    state = {
+        command: ''
+    }
     storage = new StorageManager();
 
+    createTextInputField = () => {
+        return (
+            <TextInput
+                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={text => this.onChangeText(text)}
+                placeholder={'Enter a command'}
+                value={this.state.command}
+                />
+            )
+    }
+
+    createHistoryButton = (id) => {
+        return(
+            <View style={deletableItemStyle.container}>
+                <View style={deletableItemStyle.mainButton}>
+                    <Button
+                        title={this.getFavorite(id)}
+                        onPress={() => this.selectCommandFromHistory(id)}
+                    />
+                </View>
+                <View style={deletableItemStyle.deleteButton}>
+                    <Button
+                        title='Del'
+                        onPress={() => this.deleteCommandFromHistory(id)}
+                    />
+                </View>
+            </View>
+        )
+    }
+
     render(){
-        var data = [['Text output', 'Plot output']]
         return (
             <View>
                 <Button
                     title='Settings'
                     onPress={() => this.props.navigation.navigate('Settings')}
                 />
-                <TextInput
-                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={text => this.onChangeText(text)}
-                    placeholder={'Enter a command'}
-                    />
+                {this.createTextInputField()}
                 <Button
                     title='Execute'
                     onPress = {() => this.executeCommand()}
                 />
-                <Button 
-                    title={this.getFavorite(0)}
-                    onPress={() => this.runCommandFromHistory(0)}
-                />
-                <Button 
-                    title={this.getFavorite(1)}
-                    onPress={() => this.runCommandFromHistory(1)}
-                />
-                <Button 
-                    title={this.getFavorite(2)}
-                    onPress={() => this.runCommandFromHistory(2)}
-                />
-                <View style={{height: 40}}>
-                    <DropdownMenu
-                        style={{flex: 1}}
-                        bgColor={'white'}
-                        tintColor={'#666666'}
-                        activityTintColor={'green'} 
-                        title='Expected output'
-                        titleStyle={{color: '#333333'}} 
-                        handler={(selection, row) => this.setState({text: data[selection][row]})}
-                        data={data}
-                    />
-                </View>
+                <ScrollView>
+                    {[0, 1, 2].map((id) => this.createHistoryButton(id))}
+                </ScrollView>
             </View>
         );
+    }
+
+    deleteCommandFromHistory = (id) => {
+        const cmd = this.getFavorite(id);
+        console.log(cmd);
+        this.storage.deleteCommand(cmd, () => {
+            this.storage.mostCalled(this.state.command, (matches) => {
+                this.props.updateFavorites(this.state.command, matches);
+            })
+        })
     }
 
     getFavorite = (rank) => {
@@ -70,12 +87,16 @@ class CommandScreen extends Component{
         return this.props.favorites[rank];
     }
 
-    runCommandFromHistory = (rank) => {
-        let cmd = this.getFavorite(rank);
-        this._executeCommand(cmd);
+    selectCommandFromHistory = (rank) => {
+        const cmd = this.getFavorite(rank);
+        this.storage.mostCalled(cmd, (matches) => {
+            this.props.setCommand(cmd, matches);
+        });
+        this.setState({command: cmd});
     }
 
     onChangeText = (text) => {
+        this.setState({command: text});
         if (text === ''){
             return;
         }
@@ -113,6 +134,7 @@ export default connect(
     mapStateToProps,
     {
         updateFavorites,
-        setCommandType
+        setCommandType,
+        setCommand
     }
 )(CommandScreen);
