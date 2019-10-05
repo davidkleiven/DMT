@@ -129,6 +129,18 @@ class StorageManager{
         })
     }
 
+    getConnectionInfo = (alias, cb) => {
+        this._retrieveData(alias).then((item) => {
+            if (item !== null){
+                cb(JSON.parse(item));
+            }
+            else{
+                cb(null);
+            }
+        }
+        )
+    }
+
     deleteKnownConnection = (alias, cb) => {
         this._retrieveData('alias').then((values) => {
             if (values !== null){
