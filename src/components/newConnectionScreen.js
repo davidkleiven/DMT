@@ -76,7 +76,7 @@ class NewConnectionScreen extends Component{
         var sm = new StorageManager();
         
         let info = {host: this.host, username: this.username, alias: this.alias, port: this.port};
-        sm._storeData(this.alias, JSON.stringify(info));
+        sm._storeData(this.alias, info);
         sm.updateAliases(this.alias);
 
         sshCred = {
