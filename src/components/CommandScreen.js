@@ -5,7 +5,8 @@ import StorageManager from '../storageManager';
 import {
     updateFavorites,
     setCommandType,
-    setCommand
+    setCommand,
+    retrieveSSHCred
 } from '../actions/commandScreenActions';
 
 import {
@@ -126,8 +127,9 @@ class CommandScreen extends Component{
 };
 
 const mapStateToProps = ({ cmd }) => {
-    const { commandType, favorites, command } = cmd;
-    return { commandType, favorites, command };
+    const { commandType, favorites, command, sshCred } = cmd;
+    console.log(sshCred);
+    return { commandType, favorites, command, sshCred };
 }
 
 export default connect(
@@ -135,6 +137,7 @@ export default connect(
     {
         updateFavorites,
         setCommandType,
-        setCommand
+        setCommand,
+        retrieveSSHCred
     }
 )(CommandScreen);
