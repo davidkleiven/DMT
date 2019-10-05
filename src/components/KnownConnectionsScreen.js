@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import StorageManager from '../storageManager';
 import {setKnownConnections} from '../actions/KnownConnectionsActions';
 import {deletableItemStyle} from './styles';
+import {retrieveSSHCred} from '../actions/commandScreenActions';
 
 class KnownConnectionsScreen extends Component{
     componentWillMount = () => {
@@ -47,10 +48,6 @@ class KnownConnectionsScreen extends Component{
                 <ScrollView>
                     {this.props.known_connections.map((_, index) => this.createKnownConnectionButton(index))}
                 </ScrollView>
-                <Button
-                    title='Connect'
-                    onPress={() => this.connect()}
-                />
             </View>
         )
     }
@@ -65,11 +62,23 @@ class KnownConnectionsScreen extends Component{
             })
     }
     connectToKnown = (id) => {
-
-    }
-
-    connect = () => {
-
+        const name = this.props.known_connections[id];
+        let sm = new StorageManager();
+        const loginCred = sm.getConnectionInfo(name, (info) => {
+            if (info === null){
+                console.log('A known connection seems to not be known after all...');
+                return;
+            }
+            console.log("INFO", typeof(info));
+            const sshCred = {
+                host: info['host'],
+                username: info['username'],
+                alias: name,
+                password: this.passwd
+            }
+            this.props.retrieveSSHCred(sshCred);
+            this.props.navigation.navigate('Command');
+        })
     }
 }
 
@@ -80,5 +89,8 @@ const mapStateToProps = ({ knownConRed }) => {
 
 export default connect(
     mapStateToProps,
-    {setKnownConnections}
+    {
+        setKnownConnections,
+        retrieveSSHCred
+    }
 )(KnownConnectionsScreen);
