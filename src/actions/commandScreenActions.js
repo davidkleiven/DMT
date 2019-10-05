@@ -2,7 +2,8 @@ import{
     NAVIGATE_TO_COMMAND_SCREEN,
     TEXT_ENTERED_IN_CMD_FIELD,
     COMMAND_TYPE_CHANGED,
-    COMMAND_SELECTED_FROM_HISTORY
+    COMMAND_SELECTED_FROM_HISTORY,
+    RETRIEVE_SSH_CRED
 } from '../constants';
 
 export const navigateToCommandScreen = (navigate) => {
@@ -38,6 +39,15 @@ export const setCommand = (cmd, matches) => {
         dispatch({
             type: COMMAND_SELECTED_FROM_HISTORY,
             payload: {command: cmd, favorites: matches}
+        })
+    }
+}
+
+export const retrieveSSHCred = (sshCred) => {
+    return (dispatch) => {
+        dispatch({
+            type: RETRIEVE_SSH_CRED,
+            payload: sshCred
         })
     }
 }
