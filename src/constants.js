@@ -11,3 +11,6 @@ export const RETRIEVE_SSH_CRED = 'retrieve_ssh_cred';
 
 // Known connections screen actions
 export const RETRIEVED_NEW_KNOWN_CONNECTIONS = 'new_known_connections';
+
+// Dummy-server
+export const DUMMY_SERVER = 'dummy_server';
