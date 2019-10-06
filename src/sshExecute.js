@@ -1,9 +1,9 @@
 import SSH from 'react-native-ssh';
 import { DUMMY_SERVER } from './constants';
 
-export const execute = (config, command, cbResult, cbError) => {
+export const sshExecute = (config, command, cbResult, cbError) => {
     if (config.host === DUMMY_SERVER){
-        result = 'DummyServer result';
+        result = 'DummyServer result' + command;
         cbResult(result);
         cbError(null);
     }

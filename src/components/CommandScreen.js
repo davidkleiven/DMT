@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, TextInput, Button, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import StorageManager from '../storageManager';
+import {sshExecute} from '../sshExecute';
 import {
     updateFavorites,
     setCommandType,
@@ -120,6 +121,10 @@ class CommandScreen extends Component{
             return;
         }
         this.storage.updateCommand(cmd);
+        sshExecute(this.props.sshCred, cmd, (res) => {
+            console.log(res)
+        },
+        (err) => {});
     }
     executeCommand = () => {
         this._executeCommand(this.props.command);
