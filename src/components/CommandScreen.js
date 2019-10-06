@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { View, TextInput, Button, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import StorageManager from '../storageManager';
+import {sshExecute} from '../sshExecute';
 import {
     updateFavorites,
     setCommandType,
     setCommand,
     retrieveSSHCred
 } from '../actions/commandScreenActions';
+
+import {
+    updateCommandUpdateText
+} from '../actions/TextOutputActions';
 
 import {
     COMMAND_TYPE_TEXT_OUTPUT,
@@ -120,6 +125,11 @@ class CommandScreen extends Component{
             return;
         }
         this.storage.updateCommand(cmd);
+        sshExecute(this.props.sshCred, cmd, (res) => {
+            this.props.navigation.navigate('TextOutput');
+            this.props.updateCommandUpdateText(res);
+        },
+        (err) => {});
     }
     executeCommand = () => {
         this._executeCommand(this.props.command);
@@ -138,6 +148,7 @@ export default connect(
         updateFavorites,
         setCommandType,
         setCommand,
-        retrieveSSHCred
+        retrieveSSHCred,
+        updateCommandUpdateText
     }
 )(CommandScreen);

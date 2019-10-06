@@ -14,12 +14,14 @@ import CommandScreen from '../components/CommandScreen';
 import SettingsScreen from '../components/SettingsScreen';
 import NewConnectionScreen from '../components/newConnectionScreen';
 import KnownConnectionsScreen from '../components/KnownConnectionsScreen';
+import TextOutputScreen from '../components/TextOutputScreen';
 
 const MainNavigator = createStackNavigator({
   Command: {screen: CommandScreen},
   Settings: {screen: SettingsScreen},
   NewConnection: {screen: NewConnectionScreen},
-  KnownConnections: {screen: KnownConnectionsScreen}
+  KnownConnections: {screen: KnownConnectionsScreen},
+  TextOutput: {screen: TextOutputScreen}
 });
 
 const App = createAppContainer(MainNavigator);
