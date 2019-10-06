@@ -11,6 +11,10 @@ import {
 } from '../actions/commandScreenActions';
 
 import {
+    updateCommandUpdateText
+} from '../actions/TextOutputActions';
+
+import {
     COMMAND_TYPE_TEXT_OUTPUT,
     COMMAND_TYPE_PLOT_OUTPUT,
     DB_NAME
@@ -122,7 +126,8 @@ class CommandScreen extends Component{
         }
         this.storage.updateCommand(cmd);
         sshExecute(this.props.sshCred, cmd, (res) => {
-            console.log(res)
+            this.props.navigation.navigate('TextOutput');
+            this.props.updateCommandUpdateText(res);
         },
         (err) => {});
     }
@@ -143,6 +148,7 @@ export default connect(
         updateFavorites,
         setCommandType,
         setCommand,
-        retrieveSSHCred
+        retrieveSSHCred,
+        updateCommandUpdateText
     }
 )(CommandScreen);

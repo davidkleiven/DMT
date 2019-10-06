@@ -14,3 +14,6 @@ export const RETRIEVED_NEW_KNOWN_CONNECTIONS = 'new_known_connections';
 
 // Dummy-server
 export const DUMMY_SERVER = 'dummy_server';
+
+// TextOutputActions
+export const UPDATE_OUTPUT_FROM_COMMAND = 'update_output_from_command';
